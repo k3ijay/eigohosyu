@@ -121,7 +121,7 @@ body {
 }
 
 .top-bar-right .top-bar-button:hover {
-  background: linear-gradient(to bottom, #FAFAFA, #E9E9E9);
+  background: linear-gradient(to bottom, #FEFEFE, #F1F1F1);
   color: #005ABB;
 }
 

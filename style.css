@@ -309,6 +309,7 @@ input[type="text"]:focus {
 }
 
 #copy-modal-close {
+  gap: 4px;
   padding: 4px 24px;
   color: #4d4d4d;
   box-shadow:
@@ -321,15 +322,12 @@ input[type="text"]:focus {
   color: #4d4d4d;
 }
 
-#copy-modal-close::before {
-  content: "×";
-  position: relative;
-  top: -1.2px;
+.modal-close-icon {
+  display: block;
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
   color: var(--color-accent);
-  margin-right: 4px;
-  font-size: 1.25em;
-  font-weight: 700;
-  line-height: 1;
 }
 
 #reset-button {

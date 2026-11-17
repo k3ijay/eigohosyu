@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iTL 英語補習 課題回答アシスタント - made by k3ijay</title>
+  <meta name="description" content="英語補習の課題提出時、manaba の「HTMLを編集」機能で提出する際のフォーマット整形を補助する非公式 Web アプリケーションです。" />
+  <link rel="canonical" href="https://k3ijay.github.io/eigohosyu/" />
+  <!-- ogp and social metadata -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="iTL 英語補習 課題回答アシスタント" />
+  <meta property="og:title" content="iTL 英語補習 課題回答アシスタント" />
+  <meta property="og:description" content="英語補習の課題提出時、manaba の「HTMLを編集」機能で提出する際のフォーマット整形を補助する非公式 Web アプリケーションです。" />
+  <meta property="og:url" content="https://k3ijay.github.io/eigohosyu/" />
+  <meta property="og:image" content="https://k3ijay.github.io/eigohosyu/assets/ogp.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ja_JP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="iTL 英語補習 課題回答アシスタント" />
+  <meta name="twitter:description" content="英語補習の課題提出時、manaba の「HTMLを編集」機能で提出する際のフォーマット整形を補助する非公式 Web アプリケーションです。" />
+  <meta name="twitter:image" content="https://k3ijay.github.io/eigohosyu/assets/ogp.png" />
+  <!-- favicons and pwa manifest -->
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48" />
+  <link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48x48.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#2e7c40" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="英語補習アシスタント" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="container">
+    <!-- header -->
+    <header class="header">
+      <h1 class="header-title">iTL 英語補習</h1>
+      <p class="header-subtitle">課題回答アシスタント</p>
+    </header>
+
+    <!-- term and week selector -->
+    <section class="week-section" aria-label="課題の時期と週の選択">
+      <h2>時期と週の選択</h2>
+      <div class="card">
+        <div class="week-selector-row">
+          <div class="selector-group">
+            <label for="term-select">時期</label>
+            <select id="term-select">
+              <option value="">選択してください</option>
+              <option value="first">前期</option>
+              <option value="second">後期</option>
+            </select>
+          </div>
+          <div class="selector-group">
+            <label for="week-input">Week</label>
+            <input
+              type="text"
+              id="week-input"
+              inputmode="numeric"
+              maxlength="2"
+              placeholder="1〜20"
+              disabled
+            />
+          </div>
+          <span id="week-type-badge" class="badge" hidden></span>
+        </div>
+        <p id="week-status-message" class="status-message" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- even week input -->
+    <section id="even-week-section" class="input-section" hidden>
+      <h2>後期 偶数週：入力</h2>
+      <div class="card">
+        <div class="field">
+          <label for="even-text">文章</label>
+          <textarea
+            id="even-text"
+            rows="8"
+            placeholder="1回改行するごとに新しい段落（&lt;p&gt;...&lt;/p&gt;）として出力されます。"
+          ></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- odd week input -->
+    <section id="odd-week-section" class="input-section" hidden>
+      <h2>後期 奇数週：入力</h2>
+      <div class="card">
+        <div class="field">
+          <label for="odd-text-1">１．</label>
+          <textarea
+            id="odd-text-1"
+            rows="6"
+            placeholder="1回改行するごとに新しい段落（&lt;p&gt;...&lt;/p&gt;）として出力されます。"
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <label for="odd-text-2"><span id="odd-text-2-heading">２．【添削】（DeepL Writeを併用）</span></label>
+          <div class="ai-tool-controls">
+            <label class="inline-option">
+              <input type="radio" name="ai-tool-mode" value="default" checked />
+              <a
+                href="https://www.deepl.com/ja/write"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="ai-tool-link"
+              >DeepL Write</a>（デフォルト）
+            </label>
+            <label class="inline-option">
+              <input type="radio" name="ai-tool-mode" value="custom" />
+              その他のAI
+            </label>
+            <label class="inline-option">
+              <input type="radio" name="ai-tool-mode" value="none" />
+              AIの併用なし
+            </label>
+            <input
+              type="text"
+              id="custom-ai-input"
+              class="custom-ai-input"
+              placeholder="使用したAIモデルを入力"
+              aria-label="使用したAIモデルを入力"
+              hidden
+            />
+          </div>
+          <textarea
+            id="odd-text-2"
+            rows="6"
+            placeholder="1回改行するごとに新しい段落（&lt;p&gt;...&lt;/p&gt;）として出力されます。"
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <p class="field-label">３．【評価】</p>
+          <table class="eval-input-table">
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>評価</th>
+              </tr>
+            </thead>
+            <tbody id="eval-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- output code and preview -->
+    <section id="output-section" class="output-section" aria-label="出力結果" hidden>
+      <div class="output-header">
+        <h2>完成品</h2>
+        <div class="output-actions">
+          <button type="button" id="copy-button">コピー</button>
+          <button type="button" id="reset-button">入力をクリア</button>
+        </div>
+      </div>
+      <div class="card">
+        <p id="copy-status" class="status-message" aria-live="polite"></p>
+        <h3>コードプレビュー</h3>
+        <textarea id="html-output" class="code-output" rows="14" readonly></textarea>
+
+        <div class="preview-block">
+          <h3>表示プレビュー</h3>
+          <div id="html-preview" class="preview-area"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- footer -->
+    <footer class="footer">
+      <p>Copyright &copy; 2026 K3ijay. All Rights Reserved.</p>
+      <p>本アシスタントは、英語補習の課題提出時のフォーマット整形を補助する目的で、個人が開発した非公式のアプリケーションです。出力内容の質や課題の評価結果について保証するものではありません。利用により生じた損害等について、開発者は一切の責任を負いません。</p>
+    </footer>
+  </main>
+
+  <!-- copy complete modal -->
+  <div
+    id="copy-modal"
+    class="modal-backdrop"
+    hidden
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="copy-modal-title"
+  >
+    <div class="modal-dialog">
+      <div class="modal-body">
+        <h2 id="copy-modal-title">コピー完了</h2>
+        <hr class="modal-divider" />
+        <p class="modal-message">
+          コピーしたコードは<a href="https://room.chuo-u.ac.jp/ct/home" target="_blank" rel="noopener noreferrer">manaba</a>から提出します。<br />英語補習の該当する週のプロジェクトページの「コメントを書く」ボタンを押してから、右側にある「HTMLを編集」を押し、そこにペーストしてください。<br />提出前に必ず「プレビュー」ボタンを押して、正しく反映できているか、よく見直すようにお願いします。
+        </p>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="copy-modal-close">閉じる</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

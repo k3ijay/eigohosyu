@@ -61,6 +61,70 @@ body {
   line-height: 1.4;
 }
 
+/* top bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 36px;
+  padding: 4px 10px;
+  background: linear-gradient(to bottom, #f7f7f7, #e8e8e8);
+  border: 1.5px solid #cfcfcf;
+  border-radius: 0;
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    inset 0 -1px 0 #ffffff,
+    0px 1px 1px #e2e2e2;
+}
+
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.top-bar-button {
+  display: inline-flex;
+  align-items: center;
+  height: 25px;
+  padding: 0 12px;
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #6EB000, #4E9c00);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.4);
+}
+
+.top-bar-button:hover {
+  background: linear-gradient(to bottom, #78bf00, #57ad00);
+}
+
+.label-short,
+.label-short-xs {
+  display: none;
+}
+
+.top-bar-right .top-bar-button {
+  background: linear-gradient(to bottom, #FAFAFA, #E9E9E9);
+  color: #585858;
+  font-size: 0.8rem;
+  border: 1px solid #ACACAC;
+  box-shadow:
+    inset 0 1px 0 #ffffff,
+    inset 0 -1px 0 #ffffff;
+}
+
+.top-bar-right .top-bar-button:hover {
+  background: linear-gradient(to bottom, #FAFAFA, #E9E9E9);
+  color: #005ABB;
+}
+
 .card {
   background-color: var(--color-bg-primary);
   border: 1px solid var(--color-border-default);
@@ -475,6 +539,49 @@ button:hover {
 }
 
 /* responsive adjustments */
+@media (max-width: 767px) {
+  .top-bar {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 4px 8px;
+  }
+
+  .top-bar-right {
+    display: contents;
+  }
+
+  .label-full {
+    display: none;
+  }
+
+  .label-short {
+    display: inline;
+  }
+
+  .top-bar-button {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 0 6px;
+    font-size: clamp(0.65rem, 2.8vw, 0.85rem);
+    white-space: nowrap;
+  }
+
+  .top-bar-right .top-bar-button {
+    font-size: clamp(0.6rem, 2.5vw, 0.8rem);
+  }
+}
+
+@media (max-width: 374px) {
+  .label-full-xs {
+    display: none;
+  }
+
+  .label-short-xs {
+    display: inline;
+  }
+}
+
 @media (max-width: 640px) {
   .eval-input-table th:last-child,
   .eval-input-table td:last-child {

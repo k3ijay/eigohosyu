@@ -186,11 +186,7 @@ input[type="text"] {
   background-color: var(--color-bg-input);
 }
 
-#week-input {
-  width: 90px;
-}
-
-#week-input:disabled {
+select:disabled {
   background-color: #F8F8F8;
   color: #59636e;
   cursor: not-allowed;

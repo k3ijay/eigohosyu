@@ -1,6 +1,7 @@
-/* app config: week limit, ai model, and evaluation items */
+/* app config: week range, ai model, and evaluation items */
 const CONFIG = {
-  maxWeek: 20,
+  minWeek: 4,
+  maxWeek: 13,
   defaultAiModel: "DeepL Write",
   scoreOptions: ["0.0", "0.5", "1.0"],
   scoreLabels: ["低", "中", "高"],
@@ -44,13 +45,13 @@ function sanitizeNaturalNumberInput(rawValue) {
   return halfWidth.replace(/[^0-9]/g, "").replace(/^0+/, "");
 }
 
-/* return an integer from 1 to max week if valid, otherwise null */
+/* return an integer from minWeek to maxWeek if valid, otherwise null */
 function parseValidWeekNumber(sanitizedValue) {
   if (!sanitizedValue) {
     return null;
   }
   const num = Number(sanitizedValue);
-  if (!Number.isInteger(num) || num < 1 || num > CONFIG.maxWeek) {
+  if (!Number.isInteger(num) || num < CONFIG.minWeek || num > CONFIG.maxWeek) {
     return null;
   }
   return num;
@@ -149,7 +150,7 @@ function buildOddWeekHtml(
 /* initialize ui state and event listeners */
 function initApp() {
   const termSelect = document.getElementById("term-select");
-  const weekInput = document.getElementById("week-input");
+  const weekSelect = document.getElementById("week-select");
   const weekTypeBadge = document.getElementById("week-type-badge");
   const weekStatusMessage = document.getElementById("week-status-message");
 
@@ -264,7 +265,7 @@ function initApp() {
 
   function updateWeekView() {
     if (!state.term) {
-      weekInput.disabled = true;
+      weekSelect.disabled = true;
       weekTypeBadge.hidden = true;
       evenWeekSection.hidden = true;
       oddWeekSection.hidden = true;
@@ -274,7 +275,7 @@ function initApp() {
     }
 
     if (state.term === "first") {
-      weekInput.disabled = true;
+      weekSelect.disabled = true;
       weekTypeBadge.hidden = true;
       evenWeekSection.hidden = true;
       oddWeekSection.hidden = true;
@@ -283,25 +284,15 @@ function initApp() {
       return;
     }
 
-    weekInput.disabled = false;
+    weekSelect.disabled = false;
 
     // second term selected
-    const rawSanitized = weekInput.value;
-    if (!rawSanitized) {
-      weekTypeBadge.hidden = true;
-      evenWeekSection.hidden = true;
-      oddWeekSection.hidden = true;
-      outputSection.hidden = true;
-      setWeekStatus(`1〜${CONFIG.maxWeek}の自然数を入力してください。`);
-      return;
-    }
-
     if (state.weekNumber === null) {
       weekTypeBadge.hidden = true;
       evenWeekSection.hidden = true;
       oddWeekSection.hidden = true;
       outputSection.hidden = true;
-      setWeekStatus(`${CONFIG.maxWeek}以下の自然数を入力してください。`, true);
+      setWeekStatus("Weekを選択してください。");
       return;
     }
 
@@ -409,17 +400,13 @@ function initApp() {
     setCopyStatus("");
     updateWeekView();
     updateOutput();
-    if (state.term === "second" && !weekInput.value) {
-      weekInput.focus();
+    if (state.term === "second" && !weekSelect.value) {
+      weekSelect.focus();
     }
   });
 
-  weekInput.addEventListener("input", () => {
-    const sanitized = sanitizeNaturalNumberInput(weekInput.value);
-    if (weekInput.value !== sanitized) {
-      weekInput.value = sanitized;
-    }
-    state.weekNumber = parseValidWeekNumber(sanitized);
+  weekSelect.addEventListener("change", () => {
+    state.weekNumber = parseValidWeekNumber(weekSelect.value);
     setCopyStatus("");
     updateWeekView();
     updateOutput();
